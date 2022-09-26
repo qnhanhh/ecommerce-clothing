@@ -45,13 +45,14 @@
     opacity: 0.7;
     position: absolute;
     h2 {
-      text-transform: capitalize;
+      text-transform: uppercase;
       font-weight: bold;
       margin: 0 6px 0;
       font-size: 22px;
       color: #4a4a4a;
     }
     p {
+      text-transform: uppercase;
       font-weight: lighter;
       font-size: 16px;
     }
