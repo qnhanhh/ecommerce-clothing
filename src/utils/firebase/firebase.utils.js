@@ -6,6 +6,7 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
+    onAuthStateChanged
 } from 'firebase/auth'
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
 
@@ -69,3 +70,7 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 }
 
 export const signOutUser = async () => await signOut(auth)
+
+//onAuthStateChanged: call callback function whenever the state of auth changes
+//this is an open listener: always waiting to see whether the auth state changes -> changes -> callback function => memory leak if we dont tell it to stop when the component (user.context) unmounts 
+export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback)
