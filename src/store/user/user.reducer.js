@@ -8,7 +8,6 @@ const USER_INITIAL_STATE = {
 //=> by default, return current state => the code knows that this part of the reducer didn't change
 export const userReducer = (state = USER_INITIAL_STATE, action) => {
     const { type, payload } = action
-
     switch (type) {
         case USER_ACTION_TYPES.SET_CURRENT_USER:
             return {
