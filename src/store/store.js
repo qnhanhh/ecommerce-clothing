@@ -3,6 +3,9 @@
 
 import { compose, createStore, applyMiddleware } from 'redux'
 import logger from 'redux-logger'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+
 import { rootReducer } from './root-reducer'
 
 //create custom middleware
@@ -20,9 +23,22 @@ import { rootReducer } from './root-reducer'
 //     console.log('next state: ', store.getState());
 // }
 
+//config to tell redux persist what we want
+const persistConfig = {
+    key: 'root',
+    storage,
+    blacklist: ['user']
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
 //middleware: library helper that runs before an action hits a reducer, stands between ui components and redux store
-const middleWares = [logger]
-const composedEnhancers = compose(applyMiddleware(...middleWares))
+const middleWares = [process.env.NODE_ENV !== 'production' && logger].filter(Boolean)
+
+const composeEnhancer = (process.env.NODE_ENV !== 'production' && window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose
+const composedEnhancers = composeEnhancer(applyMiddleware(...middleWares))
 
 //root-reducer: combination of all reducers
-export const store = createStore(rootReducer, undefined, composedEnhancers)
+export const store = createStore(persistedReducer, undefined, composedEnhancers)
+
+export const persistor = persistStore(store)
