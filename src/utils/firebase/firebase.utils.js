@@ -54,10 +54,10 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
 
 export const getCategoriesAndDocuments = async () => {
     const collectionRef = collection(db, 'categories')
-    const q=query(collectionRef)
+    const q = query(collectionRef)
 
-    const querySnapshot=await getDocs(q)
-    return querySnapshot.docs.map((docSnapshot)=>docSnapshot.data())
+    const querySnapshot = await getDocs(q)
+    return querySnapshot.docs.map((docSnapshot) => docSnapshot.data())
 }
 
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => {
@@ -84,8 +84,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInformation
     }
 
     //if user data exists
-    //return userDocRef
-    return userDocRef
+    return userSnapshot
 }
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
@@ -101,5 +100,17 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 export const signOutUser = async () => await signOut(auth)
 
 //onAuthStateChanged: call callback function whenever the state of auth changes
-//this is an open listener: always waiting to see whether the auth state changes -> changes -> callback function => memory leak if we dont tell it to stop when the component (user.context) unmounts 
+//this is an open listener: always waiting to see whether the auth state changes -> changes -> callback function => memory leak if we don't tell it to stop when the component (user.context) unmounts 
 export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback)
+
+export const getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = onAuthStateChanged(
+            auth,
+            (userAuth) => {
+                unsubscribe()
+                resolve(userAuth)
+            },
+            reject)
+    })
+}

@@ -9,6 +9,7 @@ export function* fetchCategoriesAsync() {
         //call(): pass it a callable method and its param. function to effect
         // const categoriesArray = yield call(getCategoriesAndDocuments,'categories');
         const categoriesArray = yield call(getCategoriesAndDocuments);
+        //put(): start the action with params
         yield put(fetchCategoriesSuccess(categoriesArray))
     } catch (error) {
         yield put(fetchCategoriesFailed(error))
