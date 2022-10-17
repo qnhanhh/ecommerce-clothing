@@ -1,9 +1,10 @@
 //combined place where all redux happens
 //where states live, receive actions and dispatch them into reducers to update states
 
-import { compose, createStore, applyMiddleware } from 'redux'
+import { compose, createStore, applyMiddleware, Middleware } from 'redux'
 import logger from 'redux-logger'
-import { persistStore, persistReducer } from 'redux-persist'
+// import logger from 'redux-logger'
+import { persistStore, persistReducer, PersistConfig } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import createSagaMiddleware from 'redux-saga'
 
@@ -25,8 +26,19 @@ import { rootReducer } from './root-reducer'
 //     console.log('next state: ', store.getState());
 // }
 
+declare global {
+    interface Window {
+        __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose
+    }
+}
+export type RootState = ReturnType<typeof rootReducer>
+
 //config to tell redux persist what we want
-const persistConfig = {
+type ExtendedPersistConfig = PersistConfig<RootState> & {
+    whitelist: (keyof RootState)[]
+}
+
+const persistConfig: ExtendedPersistConfig = {
     key: 'root',
     storage,
     whitelist: ['cart']
@@ -35,7 +47,8 @@ const sagaMiddleware = createSagaMiddleware()
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 //middleware: library helper that runs before an action hits a reducer, stands between ui components and redux store
-const middleWares = [process.env.NODE_ENV !== 'production' && logger, sagaMiddleware].filter(Boolean)
+const middleWares = [process.env.NODE_ENV !== 'production' && logger, sagaMiddleware]
+    .filter((middleware): middleware is Middleware => Boolean(middleware))
 
 const composeEnhancer = (process.env.NODE_ENV !== 'production' && window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose
 const composedEnhancers = composeEnhancer(applyMiddleware(...middleWares))

@@ -68,7 +68,7 @@ export const getCategoriesAndDocuments = async (): Promise<Categories[]> => {
     return querySnapshot.docs.map((docSnapshot) => docSnapshot.data() as Categories)
 }
 
-export type AdditionInformation = {
+export type AdditionalInformation = {
     displayName?: string;
 }
 
@@ -80,7 +80,7 @@ export type UserData = {
 
 export const createUserDocumentFromAuth = async (
     userAuth: User,
-    additionalInformation = {} as AdditionInformation
+    additionalInformation = {} as AdditionalInformation
 ): Promise<void | QueryDocumentSnapshot<UserData>> => {
     if (!userAuth) return
     const userDocRef = doc(db, 'users', userAuth.uid)
