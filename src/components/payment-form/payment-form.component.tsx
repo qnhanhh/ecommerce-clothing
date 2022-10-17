@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { StripeCardElement } from "@stripe/stripe-js";
 
 import { selectCartTotal } from "../../store/cart/cart.selector";
 import { selectCurrentUser } from "../../store/user/user.selector";
@@ -11,7 +12,6 @@ import {
 } from "./payment-form.styles";
 import { resetCart } from "../../store/cart/cart.action";
 import { BUTTON_TYPE_CLASSES } from "../button/button.component";
-import { StripeCardElement } from "@stripe/stripe-js";
 
 const ifValidCardElement = (
   card: StripeCardElement | null
@@ -26,7 +26,6 @@ const PaymentForm = () => {
   const [isProcessingPayment, setProcessingPayment] = useState(false);
 
   const paymentHandler = async (e: FormEvent<HTMLFormElement>) => {
-    console.log("handling");
     e.preventDefault();
     if (!stripe || !elements) return;
 
