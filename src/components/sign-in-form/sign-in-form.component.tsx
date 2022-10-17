@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 
 import FormInput from "../form-input/form-input.component";
-import Button from "../button/button.component";
-import { ButtonContainer, SignInContainer } from "./sign-in-form.styles.jsx";
+import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
+import { ButtonContainer, SignInContainer } from "./sign-in-form.styles";
 import {
   emailSignInStart,
   googleSignInStart,
@@ -24,7 +24,7 @@ const SignInForm = () => {
     setFormFields(defaultFormFields);
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormFields({
       ...formFields,
@@ -32,7 +32,7 @@ const SignInForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(emailSignInStart(email, password));
     resetFormFields();
@@ -47,31 +47,27 @@ const SignInForm = () => {
       <form onSubmit={handleSubmit}>
         <FormInput
           label="Email"
-          inputOptions={{
-            type: "email",
-            required: "true",
-            onChange: handleChange,
-            name: "email",
-            value: email,
-          }}
+          type="email"
+          required
+          onChange={handleChange}
+          name="email"
+          value={email}
         />
 
         <FormInput
           label="Password"
-          inputOptions={{
-            type: "password",
-            required: "true",
-            onChange: handleChange,
-            name: "password",
-            value: password,
-          }}
+          type="password"
+          required
+          onChange={handleChange}
+          name="password"
+          value={password}
         />
         <ButtonContainer>
           <Button children="Sign In" type="submit" />
           <Button
             type="button"
             children="Google Sign In"
-            buttonType="google"
+            buttonType={BUTTON_TYPE_CLASSES.google}
             onClick={signInWithGoogle}
           />
         </ButtonContainer>

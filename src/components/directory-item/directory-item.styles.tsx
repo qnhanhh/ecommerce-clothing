@@ -1,11 +1,15 @@
 import styled from "styled-components";
 
-export const BackgroundImage = styled.div`
+type ImageUrlProps = {
+  imageUrl: string;
+};
+
+export const BackgroundImage = styled.div<ImageUrlProps>`
   width: 100%;
   height: 100%;
   background-size: cover;
   background-position: center;
-  background-image: ${({imageUrl})=>`url(${imageUrl})`};
+  background-image: ${({ imageUrl }) => `url(${imageUrl})`};
 `;
 
 export const DirectoryItemBody = styled.div`
@@ -48,12 +52,12 @@ export const DirectoryItemContainer = styled.div`
   &:hover {
     cursor: pointer;
 
-    & ${BackgroundImage}{
-    transform: scale(1.1);
-    transition: transform 6s cubic-bezier(0.25, 0.45, 0.45, 0.95);
+    & ${BackgroundImage} {
+      transform: scale(1.1);
+      transition: transform 6s cubic-bezier(0.25, 0.45, 0.45, 0.95);
     }
-    & ${DirectoryItemBody}{
-    opacity: 0.9;
+    & ${DirectoryItemBody} {
+      opacity: 0.9;
     }
   }
   &:first-child {
@@ -63,7 +67,3 @@ export const DirectoryItemContainer = styled.div`
     margin-left: 7.5px;
   }
 `;
-
-
-
-

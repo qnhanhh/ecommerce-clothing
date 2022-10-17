@@ -11,7 +11,7 @@ import {
   LogoContainer,
   NavLinks,
   NavLink,
-} from "./navigation.styles.jsx";
+} from "./navigation.styles";
 import { selectCurrentUser } from "../../store/user/user.selector";
 import { selectCartOpen } from "../../store/cart/cart.selector";
 import { signOutStart } from "../../store/user/user.action";
