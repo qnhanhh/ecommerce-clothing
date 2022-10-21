@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { CategoryItem } from "../../store/categories/categories.types";
+import { CategoryItem } from "../../recoil/categories/categories.state";
 
 import ProductCard from "../product-card/product-card.component";
 import {

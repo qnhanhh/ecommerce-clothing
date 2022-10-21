@@ -1,27 +1,27 @@
 import { FormEvent, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useRecoilValue, useResetRecoilState } from "recoil";
+import { useSelector } from "react-redux";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { StripeCardElement } from "@stripe/stripe-js";
 
-import { selectCartTotal } from "../../store/cart/cart.selector";
 import { selectCurrentUser } from "../../store/user/user.selector";
 import {
   PaymentFormContainer,
   FormContainer,
   PaymentButton,
 } from "./payment-form.styles";
-import { resetCart } from "../../store/cart/cart.action";
 import { BUTTON_TYPE_CLASSES } from "../button/button.component";
+import { cartSelector, cartState } from "../../recoil/cart/cart.state";
 
 const ifValidCardElement = (
   card: StripeCardElement | null
 ): card is StripeCardElement => card !== null;
 
 const PaymentForm = () => {
-  const dispatch = useDispatch();
   const stripe = useStripe();
   const elements = useElements();
-  const amount = useSelector(selectCartTotal);
+  const { cartTotal } = useRecoilValue(cartSelector);
+  const resetCart = useResetRecoilState(cartState);
   const currentUser = useSelector(selectCurrentUser);
   const [isProcessingPayment, setProcessingPayment] = useState(false);
 
@@ -36,7 +36,7 @@ const PaymentForm = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ amount: amount * 100 }),
+      body: JSON.stringify({ amount: cartTotal * 100 }),
     }).then((res) => res.json());
 
     const {
@@ -61,7 +61,7 @@ const PaymentForm = () => {
     if (paymentResult.error) {
       alert(paymentResult.error);
     } else if (paymentResult.paymentIntent.status === "succeeded") {
-      dispatch(resetCart());
+      resetCart();
     }
   };
 

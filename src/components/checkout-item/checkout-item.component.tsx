@@ -1,12 +1,7 @@
 import { FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
-import { selectCartItems } from "../../store/cart/cart.selector";
-import {
-  addItemToCart,
-  removeItemFromCart,
-  clearItemFromCart,
-} from "../../store/cart/cart.action";
+import { cartState, cartSelector } from "../../recoil/cart/cart.state";
 import {
   Arrow,
   CheckoutItemContainer,
@@ -16,22 +11,34 @@ import {
   RemoveButton,
   Value,
 } from "./checkout-item.styles";
-import { CartItem } from "../../store/cart/cart.types";
+import { CartItem } from "../../recoil/cart/cart.state";
+import {
+  addCartItem,
+  clearCartItem,
+  removeCartItem,
+} from "../../recoil/cart/cart.actions";
 
 type CheckoutItemProps = {
   cartItem: CartItem;
 };
 
 const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
-  const dispatch = useDispatch();
-
-  const cartItems = useSelector(selectCartItems);
+  const { cartItems } = useRecoilValue(cartSelector);
+  const setCartItems = useSetRecoilState(cartState);
 
   const clearItemHandler = () =>
-    dispatch(clearItemFromCart(cartItems, cartItem));
-  const addItemHandler = () => dispatch(addItemToCart(cartItems, cartItem));
+    setCartItems((prevState) => {
+      return { ...prevState, cartItems: clearCartItem(cartItems, cartItem) };
+    });
+
+  const addItemHandler = () =>
+    setCartItems((prevState) => {
+      return { ...prevState, cartItems: addCartItem(cartItems, cartItem) };
+    });
   const removeItemHandler = () =>
-    dispatch(removeItemFromCart(cartItems, cartItem));
+    setCartItems((prevState) => {
+      return { ...prevState, cartItems: removeCartItem(cartItems, cartItem) };
+    });
 
   const { name, imageUrl, price, quantity } = cartItem;
   return (

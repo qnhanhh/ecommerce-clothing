@@ -1,9 +1,4 @@
-import { useSelector } from "react-redux";
-
-import {
-  selectCartTotal,
-  selectCartItems,
-} from "../../store/cart/cart.selector";
+import { useRecoilValue } from "recoil";
 
 import {
   CheckoutContainer,
@@ -13,10 +8,10 @@ import {
 } from "./checkout.styles";
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 import PaymentForm from "../../components/payment-form/payment-form.component";
+import { cartSelector } from "../../recoil/cart/cart.state";
 
 const Checkout = () => {
-  const cartTotal = useSelector(selectCartTotal);
-  const cartItems = useSelector(selectCartItems);
+  const { cartTotal, cartItems } = useRecoilValue(cartSelector);
 
   return (
     <CheckoutContainer>

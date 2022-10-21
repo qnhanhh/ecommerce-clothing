@@ -21,7 +21,7 @@ import {
     getDocs,
     QueryDocumentSnapshot
 } from 'firebase/firestore'
-import { Categories } from '../../store/categories/categories.types'
+import {Categories} from '../../recoil/categories/categories.state'
 
 const firebaseConfig = {
     apiKey: "AIzaSyA_ibue-fQqHTLgDLQHTLBfiVqsL1HxQmc",

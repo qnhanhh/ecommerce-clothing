@@ -41,7 +41,7 @@ type ExtendedPersistConfig = PersistConfig<RootState> & {
 const persistConfig: ExtendedPersistConfig = {
     key: 'root',
     storage,
-    whitelist: ['cart']
+    whitelist: []
 }
 const sagaMiddleware = createSagaMiddleware()
 const persistedReducer = persistReducer(persistConfig, rootReducer)

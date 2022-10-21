@@ -1,19 +1,17 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
-import { setCartOpen } from "../../store/cart/cart.action";
-import {
-  selectCartCount,
-  selectCartOpen,
-} from "../../store/cart/cart.selector";
+import { cartSelector, cartState } from "../../recoil/cart/cart.state";
 import { CartIconContainer, ItemCount, Icon } from "./cart-icon.styles";
 
 const CartIcon = () => {
-  const dispatch = useDispatch();
+  const setCartOpen = useSetRecoilState(cartState);
+  const { cartCount } = useRecoilValue(cartSelector);
 
-  const isCartOpen = useSelector(selectCartOpen);
-  const cartCount = useSelector(selectCartCount);
-
-  const toggleCartOpen = () => dispatch(setCartOpen(!isCartOpen));
+  const toggleCartOpen = () =>
+    setCartOpen((prevState) => {
+      return { ...prevState, isCartOpen: !prevState.isCartOpen };
+    });
+  // const toggleCartOpen = () => dispatch(setCartOpen(!isCartOpen));
 
   return (
     <CartIconContainer onClick={toggleCartOpen}>

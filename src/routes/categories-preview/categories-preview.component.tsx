@@ -1,11 +1,11 @@
 import { Fragment } from "react";
-import { useSelector } from "react-redux";
+import {useRecoilValue} from 'recoil'
 
-import {selectCategoriesMap} from '../../store/categories/categories.selector'
+import { categoriesSelector } from "../../recoil/categories/categories.state";
 import CategoryPreview from "../../components/category-preview/category-preview.component";
 
 const CategoriesPreview = () => {
-  const categoriesMap=useSelector(selectCategoriesMap)
+  const {categoriesMap}=useRecoilValue(categoriesSelector)
 
   return (
     <Fragment>

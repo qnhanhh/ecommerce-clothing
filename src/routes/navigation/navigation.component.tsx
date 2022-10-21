@@ -1,11 +1,13 @@
 import { Fragment } from "react";
 import { Outlet } from "react-router-dom";
+import {useRecoilValue} from 'recoil'
 import { useDispatch, useSelector } from "react-redux";
 
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 import CartIcon from "../../components/cart-icon/cart-icon.component";
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
 
+import { cartSelector } from "../../recoil/cart/cart.state";
 import {
   NavigationContainer,
   LogoContainer,
@@ -13,14 +15,13 @@ import {
   NavLink,
 } from "./navigation.styles";
 import { selectCurrentUser } from "../../store/user/user.selector";
-import { selectCartOpen } from "../../store/cart/cart.selector";
 import { signOutStart } from "../../store/user/user.action";
 
 const Navigation = () => {
   const dispatch = useDispatch();
 
   const currentUser = useSelector(selectCurrentUser);
-  const isCartOpen = useSelector(selectCartOpen);
+  const {isCartOpen} = useRecoilValue(cartSelector);
 
   const signOutUser = () => dispatch(signOutStart());
 
