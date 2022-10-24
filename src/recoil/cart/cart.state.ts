@@ -1,5 +1,5 @@
 import { atom, selector } from 'recoil'
-import { CategoryItem } from '../../store/categories/categories.types'
+import { CategoryItem } from '../categories/categories.state'
 
 export type CartItem = CategoryItem & {
     quantity: number

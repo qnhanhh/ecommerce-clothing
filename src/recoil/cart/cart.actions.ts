@@ -1,5 +1,5 @@
 import { CartItem } from "./cart.state";
-import { CategoryItem } from "../../store/categories/categories.types";
+import { CategoryItem } from "../categories/categories.state";
 
 export const addCartItem = (cartItems: CartItem[], productToAdd: CategoryItem): CartItem[] => {
     //find if cartItems contains productToAdd
