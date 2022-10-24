@@ -1,10 +1,9 @@
 import { FormEvent, useState } from "react";
 import { useRecoilValue, useResetRecoilState } from "recoil";
-import { useSelector } from "react-redux";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { StripeCardElement } from "@stripe/stripe-js";
 
-import { selectCurrentUser } from "../../store/user/user.selector";
+import { userSelector } from "../../recoil/user/user.state";
 import {
   PaymentFormContainer,
   FormContainer,
@@ -22,7 +21,7 @@ const PaymentForm = () => {
   const elements = useElements();
   const { cartTotal } = useRecoilValue(cartSelector);
   const resetCart = useResetRecoilState(cartState);
-  const currentUser = useSelector(selectCurrentUser);
+  const { currentUser } = useRecoilValue(userSelector);
   const [isProcessingPayment, setProcessingPayment] = useState(false);
 
   const paymentHandler = async (e: FormEvent<HTMLFormElement>) => {

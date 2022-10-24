@@ -1,13 +1,15 @@
 import { useState, FormEvent, ChangeEvent } from "react";
-import { useDispatch } from "react-redux";
+import { useSetRecoilState } from "recoil";
 
+import { userState } from "../../recoil/user/user.state";
 import FormInput from "../form-input/form-input.component";
 import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 import { ButtonContainer, SignInContainer } from "./sign-in-form.styles";
 import {
-  emailSignInStart,
-  googleSignInStart,
-} from "../../store/user/user.action";
+  signInWithGoogle,
+  signInWithEmail,
+} from "../../recoil/user/user.actions";
+import { UserData } from "../../utils/firebase/firebase.utils";
 
 const defaultFormFields = {
   email: "",
@@ -15,7 +17,7 @@ const defaultFormFields = {
 };
 
 const SignInForm = () => {
-  const dispatch = useDispatch();
+  const setState = useSetRecoilState(userState);
 
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
@@ -34,11 +36,35 @@ const SignInForm = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(emailSignInStart(email, password));
+    emailSignIn();
     resetFormFields();
   };
 
-  const signInWithGoogle = () => dispatch(googleSignInStart());
+  const emailSignIn = async () => {
+    try {
+      const user = await signInWithEmail(email, password);
+      setState((prevState) => {
+        return { ...prevState, currentUser: user as UserData };
+      });
+    } catch (error) {
+      setState((prevState) => {
+        return { ...prevState, error: error as Error };
+      });
+    }
+  };
+
+  const googleSignIn = async () => {
+    try {
+      const user = await signInWithGoogle();
+      setState((prevState) => {
+        return { ...prevState, currentUser: user as UserData };
+      });
+    } catch (error) {
+      setState((prevState) => {
+        return { ...prevState, error: error as Error };
+      });
+    }
+  };
 
   return (
     <SignInContainer>
@@ -68,7 +94,7 @@ const SignInForm = () => {
             type="button"
             children="Google Sign In"
             buttonType={BUTTON_TYPE_CLASSES.google}
-            onClick={signInWithGoogle}
+            onClick={googleSignIn}
           />
         </ButtonContainer>
       </form>

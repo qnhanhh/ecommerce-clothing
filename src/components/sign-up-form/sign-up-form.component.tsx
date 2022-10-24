@@ -1,11 +1,13 @@
 import { useState, FormEvent, ChangeEvent } from "react";
-import { useDispatch } from "react-redux";
+import { useSetRecoilState } from "recoil";
 
+import { userState } from "../../recoil/user/user.state";
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
 import { SignUpContainer } from "./sign-up-form.styles";
-import { signUpStart } from "../../store/user/user.action";
 import { AuthError, AuthErrorCodes } from "firebase/auth";
+import { signUp } from "../../recoil/user/user.actions";
+import { UserData } from "../../utils/firebase/firebase.utils";
 
 const defaultFormFields = {
   displayName: "",
@@ -15,13 +17,13 @@ const defaultFormFields = {
 };
 
 const SignUpForm = () => {
-  const dispatch = useDispatch();
+  const setState = useSetRecoilState(userState);
 
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
 
   const resetFormFields = () => {
-    setFormFields(defaultFormFields); 
+    setFormFields(defaultFormFields);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -32,20 +34,33 @@ const SignUpForm = () => {
     });
   };
 
+  const signUpStart = async () => {
+    try {
+      const user = await signUp(email, password, displayName);
+      setState((prevState) => {
+        return { ...prevState, currentUser: user as UserData };
+      });
+    } catch (error) {
+      setState((prevState) => {
+        return { ...prevState, error: error as Error };
+      });
+    }
+  };
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("passwords do not match");
       return;
     }
-    try{
-      dispatch(signUpStart(email, password, displayName));
+    try {
+      signUpStart();
       resetFormFields();
-    }catch(error){
-      if((error as AuthError).code===AuthErrorCodes.EMAIL_EXISTS){
-        alert('Cannot create user, email already in use')
-      }else{
-        console.log('user creation encountered an error: ', error);
+    } catch (error) {
+      if ((error as AuthError).code === AuthErrorCodes.EMAIL_EXISTS) {
+        alert("Cannot create user, email already in use");
+      } else {
+        console.log("user creation encountered an error: ", error);
       }
     }
   };
