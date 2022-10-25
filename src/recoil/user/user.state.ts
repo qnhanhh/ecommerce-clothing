@@ -14,7 +14,7 @@ const USER_INITIAL_STATE: UserState = {
     error: null,
 }
 
-export const userState = atom({
+export const userState = atom<UserState>({
     key: 'user',
     default: USER_INITIAL_STATE
 })

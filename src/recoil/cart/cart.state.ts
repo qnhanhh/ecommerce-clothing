@@ -1,4 +1,5 @@
 import { atom, selector } from 'recoil'
+import { recoilPersist } from 'recoil-persist'
 import { CategoryItem } from '../categories/categories.state'
 
 export type CartItem = CategoryItem & {
@@ -15,9 +16,15 @@ export const CART_INITIAL_STATE: CartState = {
     cartItems: [],
 };
 
+const { persistAtom } = recoilPersist({
+    key: 'cart-persist',
+    storage: localStorage
+})
+
 export const cartState = atom<CartState>({
     key: 'cart',
-    default: CART_INITIAL_STATE
+    default: CART_INITIAL_STATE,
+    effects_UNSTABLE: [persistAtom]
 })
 
 // export const cartItemsState=atom<CartItem[]>({
