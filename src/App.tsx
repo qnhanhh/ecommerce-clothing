@@ -9,6 +9,7 @@ import Authentication from './routes/authentication/authentication.component'
 import Shop from './routes/shop/shop.component'
 import Checkout from './routes/checkout/checkout.component'
 import { isUserAuthenticated } from './recoil/user/user.actions'
+import { UserData } from './utils/firebase/firebase.utils'
 
 const App = () => {
   const setState = useSetRecoilState(userState)
@@ -17,9 +18,8 @@ const App = () => {
     const checkUserSession = async () => {
       try {
         const userAuth = await isUserAuthenticated()
-        console.log('current user: ', userAuth)
         setState(prevState => {
-          return { ...prevState, currentUser: userAuth }
+          return { ...prevState, currentUser: userAuth as UserData }
         })
       } catch (error) {
         alert(error)

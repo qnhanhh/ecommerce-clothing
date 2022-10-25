@@ -11,7 +11,6 @@ const CartIcon = () => {
     setCartOpen((prevState) => {
       return { ...prevState, isCartOpen: !prevState.isCartOpen };
     });
-  // const toggleCartOpen = () => dispatch(setCartOpen(!isCartOpen));
 
   return (
     <CartIconContainer onClick={toggleCartOpen}>
