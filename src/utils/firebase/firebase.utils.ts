@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import {getAnalytics} from 'firebase/analytics'
+import { getAnalytics } from 'firebase/analytics'
 import {
     getAuth,
     signInWithPopup,
@@ -22,7 +22,7 @@ import {
     getDocs,
     QueryDocumentSnapshot
 } from 'firebase/firestore'
-import {Categories} from '../../recoil/categories/categories.state'
+import { Categories } from '../../recoil/categories/categories.state'
 
 const firebaseConfig = {
     apiKey: "AIzaSyA_ibue-fQqHTLgDLQHTLBfiVqsL1HxQmc",
@@ -30,11 +30,12 @@ const firebaseConfig = {
     projectId: "ecommerce-clothing-ee471",
     storageBucket: "ecommerce-clothing-ee471.appspot.com",
     messagingSenderId: "130866350963",
-    appId: "1:130866350963:web:1682de82974babc8fa9306"
+    appId: "1:130866350963:web:1682de82974babc8fa9306",
+    measureId: 'G-VP5JJ4QS32'
 }
 
-const app=initializeApp(firebaseConfig)
-const analytics=getAnalytics(app)
+const app = initializeApp(firebaseConfig)
+const analytics = getAnalytics(app)
 
 const provider = new GoogleAuthProvider()
 provider.setCustomParameters({
