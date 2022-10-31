@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app'
+import {getAnalytics} from 'firebase/analytics'
 import {
     getAuth,
     signInWithPopup,
@@ -32,7 +33,8 @@ const firebaseConfig = {
     appId: "1:130866350963:web:1682de82974babc8fa9306"
 }
 
-initializeApp(firebaseConfig)
+const app=initializeApp(firebaseConfig)
+const analytics=getAnalytics(app)
 
 const provider = new GoogleAuthProvider()
 provider.setCustomParameters({
