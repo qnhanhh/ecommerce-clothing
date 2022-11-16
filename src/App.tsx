@@ -32,25 +32,28 @@ const App = () => {
 
   useEffect(() => {
     window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault()
+      alert("prompt");
+      e.preventDefault();
       promptEvent = e as BeforeInstallPromptEvent;
     });
   }, []);
 
   const handleClick = () => {
-    promptEvent.prompt()
-    promptEvent.userChoice.then(res=>{
-      if(res.outcome==='accepted'){
-        console.log('a2hs');
-      }else{
-        console.log('no a2hs');
+    promptEvent.prompt();
+    promptEvent.userChoice.then((res) => {
+      if (res.outcome === "accepted") {
+        console.log("a2hs");
+      } else {
+        console.log("no a2hs");
       }
-    })
+    });
   };
 
   return (
     <>
-      <h1 id='test' onClick={handleClick}>Add to screen</h1>
+      <h1 id="test" onClick={handleClick}>
+        Add to screen
+      </h1>
       <Routes>
         <Route path="/" element={<Navigation />}>
           <Route index element={<Home />} />
