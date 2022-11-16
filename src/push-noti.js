@@ -1,4 +1,5 @@
 export const enablePushNoti = () => {
+    console.log('noti');
     if (Notification.permission === 'denied') {
         alert('noti blocked')
         return
@@ -6,6 +7,7 @@ export const enablePushNoti = () => {
 
     navigator.serviceWorker.ready
         .then(res => {
+            console.log('ready');
             if(!res.pushManager){
                 alert('noti not supported')
                 return
