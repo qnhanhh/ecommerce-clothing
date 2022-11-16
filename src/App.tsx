@@ -28,7 +28,7 @@ const App = () => {
     checkUserSession();
   }, [setState]);
 
-  let promptEvent: BeforeInstallPromptEvent;
+  let promptEvent: BeforeInstallPromptEvent | null;
 
   useEffect(() => {
     window.addEventListener("beforeinstallprompt", (e) => {
@@ -39,14 +39,19 @@ const App = () => {
   }, []);
 
   const handleClick = () => {
-    promptEvent.prompt();
-    promptEvent.userChoice.then((res) => {
-      if (res.outcome === "accepted") {
-        console.log("a2hs");
-      } else {
-        console.log("no a2hs");
-      }
-    });
+    if (promptEvent) {
+      promptEvent.prompt();
+      promptEvent.userChoice.then((res) => {
+        if (res.outcome === "accepted") {
+          console.log("a2hs");
+          promptEvent = null;
+        } else {
+          console.log("no a2hs");
+        }
+      });
+    } else {
+      alert("manually add to screen");
+    }
   };
 
   return (
