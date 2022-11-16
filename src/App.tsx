@@ -10,7 +10,7 @@ import Shop from "./routes/shop/shop.component";
 import Checkout from "./routes/checkout/checkout.component";
 import { isUserAuthenticated } from "./recoil/user/user.actions";
 import { UserData } from "./utils/firebase/firebase.utils";
-import { enablePushNoti } from "./push-noti";
+import { addNoti } from "./push-noti";
 
 const App = () => {
   const setState = useSetRecoilState(userState);
@@ -39,9 +39,6 @@ const App = () => {
     });
   }, []);
 
-  useEffect(() => {
-    enablePushNoti();
-  }, []);
   const handleClick = () => {
     if (promptEvent) {
       promptEvent.prompt();
@@ -63,6 +60,7 @@ const App = () => {
       <h1 id="test" onClick={handleClick}>
         Add to screen
       </h1>
+      <h1 onClick={addNoti}>Noti</h1>
       <Routes>
         <Route path="/" element={<Navigation />}>
           <Route index element={<Home />} />
