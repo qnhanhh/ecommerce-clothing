@@ -56,6 +56,6 @@ const subscribePush = () => {
 }
 
 export const addNoti=()=>{
-    isPushSupported()
+    // isPushSupported()
     subscribePush()
 }
