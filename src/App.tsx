@@ -33,7 +33,7 @@ const App = () => {
 
   useEffect(() => {
     window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
+      // e.preventDefault();
       promptEvent = e as BeforeInstallPromptEvent;
       promptEvent.prompt()
       promptEvent.userChoice.then((res) => {
