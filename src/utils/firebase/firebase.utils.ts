@@ -24,7 +24,7 @@ import {
 } from 'firebase/firestore'
 import { Categories } from '../../recoil/categories/categories.state'
 
-const firebaseConfig = {
+export const firebaseConfig = {
     apiKey: "AIzaSyA_ibue-fQqHTLgDLQHTLBfiVqsL1HxQmc",
     authDomain: "ecommerce-clothing-ee471.firebaseapp.com",
     projectId: "ecommerce-clothing-ee471",
