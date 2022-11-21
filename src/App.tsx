@@ -34,7 +34,7 @@ const App = () => {
   useEffect(() => {
     window.addEventListener("beforeinstallprompt", (e) => {
       alert("prompt");
-      e.preventDefault();
+      console.log('e',e)
       promptEvent = e as BeforeInstallPromptEvent;
     });
   }, []);

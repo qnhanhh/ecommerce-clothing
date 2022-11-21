@@ -17,19 +17,28 @@
 //     setTimeout(randomNotification, 5000)
 // }
 import { initializeApp } from "firebase/app"
-import { getMessaging, getToken } from 'firebase/messaging'
+import { getMessaging, getToken, onMessage } from 'firebase/messaging'
 import { firebaseConfig } from "./utils/firebase/firebase.utils"
 
 const getPermission = () => {
     console.log('get permission')
-    Notification.requestPermission().then(res => {
-        if (res === 'granted') {
-            console.log('granted');
-        }
-    })
+     
+    if (!("Notification" in window)) {
+        console.log('browser does not support notification');
+    } else if (Notification.permission === 'granted') {
+        console.log('already granted');
+        retrieveToken()
+    } else if (Notification.permission !== 'denied') {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                console.log('hi there');
+                retrieveToken()
+            }
+        })
+    }
 }
 
-const firebaseNoti = () => {
+const retrieveToken = () => {
     const app = initializeApp(firebaseConfig)
     const messaging = getMessaging(app)
     getToken(messaging, { vapidKey: 'BCW94hoos5QV0WzQCaOceDrjkid11IR5PvFXZgjY7pVpmOEgq8jdqLLDEKoPTpnDdVSG-An5yAnExbEgjc-ZhLE' })
@@ -45,7 +54,8 @@ const firebaseNoti = () => {
             console.log(error);
         })
 }
+
 export const addNoti = () => {
     // subscribePush()
-    firebaseNoti()
+    getPermission()
 }
