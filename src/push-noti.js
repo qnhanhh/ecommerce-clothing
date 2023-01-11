@@ -16,6 +16,7 @@
 //     new Notification(notiTitle, options)
 //     setTimeout(randomNotification, 5000)
 // }
+
 import { initializeApp } from "firebase/app"
 import { getMessaging, getToken, onMessage } from 'firebase/messaging'
 import { firebaseConfig } from "./utils/firebase/firebase.utils"
